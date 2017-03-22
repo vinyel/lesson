@@ -1,10 +1,53 @@
 <html>
 <head>
-  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+ <!-- <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script> -->
+ <!-- <script type="text/javascript" src="./javascript/hal1.js"></script> -->
 </head>
 <body>
-  <input type="button" id="button" value="クリック">
+  <h1>HighAndLow</h1>
+  <!-- <input type="button" id="button" value="クリック"> -->
 
-  <script type="text/javascript" src="./javascript/alert.js"></script>
+  <input type="button" value="HIGH" onclick="OnHButtonClick()">
+  <input type="button" value="LOW" onclick="OnLButtonClick()">
+
+  <br><br>
+  <div id="output"></div>
+
+  
+  <script>
+    //カードの変数
+    var card;
+    //乱数
+    var rand;
+    
+	//参考にしたページ->
+	//https://www.ipentec.com/document/document.aspx?page=javascript-exec-javascript-on-button-click
+	//http://qiita.com/shuntaro_tamura/items/c9b2fec0f3a9f7d1e987
+
+    //カードの初期化(1:ある0:ない)
+	function InitCard() {
+		for ( var i = 0; i < 52; i++ ) {
+			card[i] = 1; 
+		}
+	}
+	
+	//0から51の乱数
+	function Random() {
+		rand = Math.floor(Math.random() * 52);
+	}
+    
+	function OnHButtonClick() {
+		target = document.getElementById("output");
+		target.innerHTML = "High";
+	}
+	
+	function OnLButtonClick() {
+		target = document.getElementById("output");
+		target.innerHTML = "Low";
+    }
+    
+  </script>
+
+  
 </body>
 </html>
