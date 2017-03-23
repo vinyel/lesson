@@ -7,18 +7,33 @@
   <h1>HighAndLow</h1>
   <!-- <input type="button" id="button" value="クリック"> -->
 
+  <span id="card1"></span>
+  <span> </span>
+  <span id="card2"></span>
+  <br>
+  
+  <!--img id="card1" src="gif/c01.gif" style="display:none"-->
+  
+  <input type="button" value="->" onclick="NextButtonClick()"><br>
   <input type="button" value="HIGH" onclick="OnHButtonClick()">
   <input type="button" value="LOW" onclick="OnLButtonClick()">
 
-  <br><br>
-  <div id="output"></div>
-
+  <p id="output"></p>
+  
+  <span id="card3"></span>
   
   <script>
     //カードの変数
-    var card;
+    var card = new Array(100);
     //乱数
     var rand;
+	//カードの初期化判定用変数
+	var initflag = 0;
+    
+	var number;
+	var kind;
+	
+	var cardinformation;
     
 	//参考にしたページ->
 	//https://www.ipentec.com/document/document.aspx?page=javascript-exec-javascript-on-button-click
@@ -33,9 +48,203 @@
 	
 	//0から51の乱数
 	function Random() {
-		rand = Math.floor(Math.random() * 52);
+		if ( initflag == 0 ) {
+			InitCard();
+		}
+		initflag = 1;
+		
+		cardnum = 0;
+		
+		/*---- while の条件まだ甘い ----*/
+		while ( CardNum() > 0 ) {
+			rand = Math.floor(Math.random() * 52);
+			if ( card[rand] == 1 ) {
+				card[rand] = 0;
+				break;
+			}
+		}
+		if ( CardNum() <= 0 ) {
+			rand = -1;
+		}
+		
 	}
-    
+	
+	//残りのカードの枚数を返す
+	function CardNum() {
+		var cardnum = 0;
+		for ( var n = 0; n < 52; n++ ) {
+			if ( card[n] == 1 ) {
+				cardnum++;
+			}
+		}
+		return cardnum;
+	}
+
+	//数字をカードの種類に変換
+	function ChangeToCard() {
+		/*-- 数字を二ケタの数に変換 --*/
+		switch ( rand % 13 + 1 ) {
+			case 1:
+				number = "01";
+				break;
+			case 2:
+				number = "02";
+				break;
+			case 3:
+				number = "03";
+				break;
+			case 4:
+				number = "04";
+				break;
+			case 5:
+				number = "05";
+				break;
+			case 6:
+				number = "06";
+				break;
+			case 7:
+				number = "07";
+				break;
+			case 8:
+				number = "08";
+				break;
+			case 9:
+				number = "09";
+				break;
+			case 10:
+				number = "10";
+				break;
+			case 11:
+				number = "11";
+				break;
+			case 12:
+				number = "12";
+				break;
+			case 13:
+				number = "13";
+				break;
+		}
+		
+		/*-- マークに変換 --*/
+		switch ( parseInt(rand / 13, 10) ) {
+			case 0:
+				kind = "h";
+				break;
+			case 1:
+				kind = "s";
+				break;
+			case 2:
+				kind = "d";
+				break;
+			case 3:
+				kind = "c";
+				break
+		}
+		
+	}
+
+	//親のカードを引くボタンを押したとき
+	function NextButtonClick() {
+		//-- 親がランダムにカードを引く(ただの数) --//
+		Random();
+		if ( rand != -1 ) {
+			//-- ただの数をカードの種類に変換する --//
+			ChangeToCard();
+			
+			target = document.getElementById("card1");
+			//文字でカードを表す(コメントアウト)
+			//target.innerHTML = kind + "の" + number;
+			//画像でカードを表す
+			target.innerHTML = '<img src="gif/' + kind + number + '.gif" width="100" height="150" />';
+			
+			target = document.getElementById("card2");
+			target.innerHTML = '<img src="gif/z02.gif" width="100" height="150" />';
+			
+			GetCardInformation();
+			//cardinformation = '<img src="gif/' + "c" + "01" + '.gif" width="40" height="60" />';
+			target = document.getElementById("card3");
+			target.innerHTML = cardinformation;
+		} else {
+			target = document.getElementById("card1");
+			target.innerHTML = "カードが無くなりました。";
+		}
+	}
+	
+	//カードの一覧情報を取得
+
+	function GetCardInformation() {
+		var skind; //マーク用
+		var snumber; //2桁用
+		cardinformation = '<br>';
+		for ( var i = 0; i < 13; i++ ) {
+			for( var j = 0; j < 4; j++ ) {
+				if ( card[i+j*13] == 0 ) {
+					/*-- 数字を二ケタの数に変換 --*/
+					switch ( i + 1 ) {
+						case 1:
+							snumber = "01";
+							break;
+						case 2:
+							snumber = "02";
+							break;
+						case 3:
+							snumber = "03";
+							break;
+						case 4:
+							snumber = "04";
+							break;
+						case 5:
+							snumber = "05";
+							break;
+						case 6:
+							snumber = "06";
+							break;
+						case 7:
+							snumber = "07";
+							break;
+						case 8:
+							snumber = "08";
+							break;
+						case 9:
+							snumber = "09";
+							break;
+						case 10:
+							snumber = "10";
+							break;
+						case 11:
+							snumber = "11";
+							break;
+						case 12:
+							snumber = "12";
+							break;
+						case 13:
+							snumber = "13";
+							break;
+					}
+					/*-- マークに変換 --*/
+					switch ( j ) {
+						case 0:
+							skind = "h";
+							break;
+						case 1:
+							skind = "s";
+							break;
+						case 2:
+							skind = "d";
+							break;
+						case 3:
+							skind = "c";
+							break
+					}
+					cardinformation = cardinformation + '<img src="gif/' + skind + snumber + '.gif" width="40" height="60" />';
+				} else {
+					cardinformation = cardinformation + '<img src="gif/z02.gif" width="40" height="60" />';
+				}
+			}
+			cardinformation = cardinformation + '<br>';
+		}
+	}
+	
 	function OnHButtonClick() {
 		target = document.getElementById("output");
 		target.innerHTML = "High";
